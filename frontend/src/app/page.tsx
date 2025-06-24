@@ -1,95 +1,78 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { Typography } from 'antd';
+import { ClientReview as IClientReview } from '@/interfaces/ClientReview';
+import { ClientReview } from '@/components/clientReview/ClientReview';
+import { Loader } from '@/ui/loader/Loader';
+import api from '../../axiosInstance';
+import './home.css';
+
+const { Title } = Typography;
+
+const NAMES: string[] = [
+  'Анна Петрова',
+  'Иван Иванов',
+  'Екатерина Смирнова',
+  'Дмитрий Кузнецов',
+  'Ольга Орлова',
+  'Алексей Соколов',
+  'Наталья Федорова',
+  'Максим Волков',
+  'Мария Белова',
+  'Сергей Морозов',
+];
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [clientsReviews, setClientsReviews] = useState<IClientReview[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  const getClientsReview = useCallback(async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await api.get<IClientReview[]>(`/reviews`);
+      setClientsReviews(response.data);
+      setError(null);
+    } catch {
+      setError('Не удалось загрузить отзывы. Пожалуйста, попробуйте позже.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getClientsReview();
+  }, [getClientsReview]);
+
+  const shuffledNames = useMemo(() => {
+    return [...NAMES].sort(() => 0.5 - Math.random());
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return (
+    <div className='home'>
+      <Title level={1} style={{ margin: '0px 0px 20px 0px', textAlign: 'center' }}>
+        Что говорят наши клиенты
+      </Title>
+      {error ? (
+        <div className='home_reviews_error'>
+          <Title level={4} style={{ textAlign: 'center', color: 'var(--red-color)' }}>
+            {error}
+          </Title>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ) : (
+        <div className='home_clients_reviews_grid'>
+          {clientsReviews.map((clientReview, index) => {
+            const { id, text } = clientReview;
+            return <ClientReview key={id} text={text} clientName={shuffledNames[index]} />;
+          })}
+        </div>
+      )}
     </div>
   );
 }

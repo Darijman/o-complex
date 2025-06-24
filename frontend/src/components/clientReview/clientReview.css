@@ -1,0 +1,17 @@
+.client_review {
+  padding: 20px;
+  background-color: var(--foreground-color);
+  text-align: center;
+  border-radius: 10px;
+}
+
+.custom_rate .ant-rate-star-zero .ant-rate-star-first,
+.custom_rate .ant-rate-star-zero .ant-rate-star-second {
+  color: var(--secondary-text-color) !important;
+}
+
+.client_review_avatar_wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
