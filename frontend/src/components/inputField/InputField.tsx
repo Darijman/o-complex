@@ -24,6 +24,7 @@ interface Props {
   iconRender?: (visible: boolean) => ReactNode;
   onVisibleChange?: (visible: boolean) => void;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onSearch?: (
     value: string,
     event?: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLInputElement> | undefined,
@@ -57,6 +58,7 @@ export const InputField = ({
     ),
   onVisibleChange,
   onChange,
+  onBlur,
   onSearch,
   onClear,
 }: Props) => {
@@ -111,6 +113,7 @@ export const InputField = ({
           className={className}
           iconRender={iconRender}
           onChange={onChange}
+          onBlur={onBlur}
           visibilityToggle={{ visible, onVisibleChange }}
           onClear={onClear}
         />
@@ -131,6 +134,7 @@ export const InputField = ({
           className={className}
           loading={loading}
           onChange={onChange}
+          onBlur={onBlur}
           onSearch={onSearch}
           onClear={onClear}
         />
@@ -150,6 +154,7 @@ export const InputField = ({
           name={name}
           className={className}
           onChange={onChange}
+          onBlur={onBlur}
           onClear={onClear}
         />
       )}

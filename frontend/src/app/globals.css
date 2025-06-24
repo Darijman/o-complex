@@ -36,3 +36,9 @@ body {
 main {
   padding: 50px;
 }
+
+@media screen and (max-width: 400px) {
+  main {
+    padding: 30px;
+  }
+}

@@ -5,8 +5,10 @@ import { Typography } from 'antd';
 import { ClientReview as IClientReview } from '@/interfaces/ClientReview';
 import { ClientReview } from '@/components/clientReview/ClientReview';
 import { Loader } from '@/ui/loader/Loader';
-import api from '../../axiosInstance';
+import api from '../../../axiosInstance';
 import './home.css';
+import './responsive.css';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const { Title } = Typography;
 
@@ -60,17 +62,28 @@ export default function Home() {
         Что говорят наши клиенты
       </Title>
       {error ? (
-        <div className='home_reviews_error'>
-          <Title level={4} style={{ textAlign: 'center', color: 'var(--red-color)' }}>
-            {error}
-          </Title>
-        </div>
+        <Title level={4} style={{ textAlign: 'center', color: 'var(--red-color)' }}>
+          {error}
+        </Title>
       ) : (
         <div className='home_clients_reviews_grid'>
-          {clientsReviews.map((clientReview, index) => {
-            const { id, text } = clientReview;
-            return <ClientReview key={id} text={text} clientName={shuffledNames[index]} />;
-          })}
+          <AnimatePresence>
+            {clientsReviews.map((clientReview, index) => (
+              <motion.div
+                key={clientReview.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{
+                  delay: index < 6 ? index * 0.03 : 0.15,
+                  duration: 0.2,
+                }}
+              >
+                <ClientReview key={clientReview.id} text={clientReview.text} clientName={shuffledNames[index]} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       )}
     </div>

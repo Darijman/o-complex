@@ -1,0 +1,13 @@
+@media screen and (max-width: 800px) {
+  .product_card {
+    &:hover {
+      background-color: var(--foreground-color);
+    }
+  }
+
+  .product_card_input {
+    width: 100px !important;
+    padding: 5px !important;
+    margin: 0px 5px !important;
+  }
+}

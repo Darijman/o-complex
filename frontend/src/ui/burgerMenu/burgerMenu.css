@@ -1,0 +1,17 @@
+.burger_menu {
+  display: none;
+}
+
+.burger_menu_button {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme='dark'] {
+  .burger_menu_button {
+    filter: invert(1);
+  }
+}
+
