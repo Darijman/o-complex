@@ -1,6 +1,7 @@
 .burger_navigation_list_container {
   position: fixed;
   left: 10px;
+  top: 50px;
   background-color: var(--foreground-color);
   border-radius: 10px;
   box-sizing: border-box;
