@@ -60,7 +60,7 @@ export const ProductCard = ({ product }: Props) => {
         {price.toLocaleString('ru')} ₽
       </Title>
       {!quantity ? (
-        <Button className='product_card_buy_button' onClick={() => addProduct({ id, quantity: 1 })}>
+        <Button className='product_card_buy_button' onClick={() => addProduct({ ...product, quantity: 1 })}>
           В корзину
         </Button>
       ) : (
@@ -75,7 +75,7 @@ export const ProductCard = ({ product }: Props) => {
             maxLength={10}
             className='product_card_input'
           />
-          <Button className='product_card_quantity_button' onClick={() => addProduct({ id, quantity: 1 })}>
+          <Button className='product_card_quantity_button' onClick={() => addProduct({ ...product, quantity: 1 })}>
             +
           </Button>
         </div>

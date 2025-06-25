@@ -1,13 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartProduct } from '@/interfaces/CartProduct';
+import { Product } from '@/interfaces/Product';
+
+interface CartProduct extends Product {
+  quantity: number;
+}
 
 interface CartState {
   cartProducts: CartProduct[];
   showCart: boolean;
   setShowCart: (showCart: boolean) => void;
   clearCart: () => void;
-  addProduct: (product: CartProduct) => void;
+  addProduct: (product: Product & { quantity?: number }) => void;
   deleteProduct: (productId: number) => void;
   removeOneProduct: (productId: number) => void;
   updateProductQuantity: (productId: number, quantity: number) => void;
@@ -20,17 +24,23 @@ export const useCartStore = create<CartState>()(
       showCart: false,
       setShowCart: (showCart: boolean) => set(() => ({ showCart })),
       clearCart: () => set(() => ({ cartProducts: [] })),
-      addProduct: (product: CartProduct) =>
+      addProduct: (product: Product & { quantity?: number }) =>
         set((state) => {
-          const existingProductIndex = state.cartProducts.findIndex((p) => p.id === product.id);
+          const existingIndex = state.cartProducts.findIndex((p) => p.id === product.id);
 
-          if (existingProductIndex !== -1) {
-            const updatedProducts = [...state.cartProducts];
-            updatedProducts[existingProductIndex].quantity += 1;
-            return { cartProducts: updatedProducts };
+          if (existingIndex !== -1) {
+            const updated = [...state.cartProducts];
+            const addedQuantity = product.quantity ?? 1;
+            updated[existingIndex] = {
+              ...updated[existingIndex],
+              quantity: updated[existingIndex].quantity + addedQuantity,
+            };
+            return { cartProducts: updated };
           }
 
-          return { cartProducts: [...state.cartProducts, { ...product, quantity: 1 }] };
+          return {
+            cartProducts: [...state.cartProducts, { ...product, quantity: product.quantity ?? 1 }],
+          };
         }),
 
       deleteProduct: (productId: number) => {

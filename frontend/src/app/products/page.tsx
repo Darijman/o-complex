@@ -5,9 +5,9 @@ import { Typography } from 'antd';
 import { Product } from '@/interfaces/Product';
 import { ProductCard } from '@/components/productCard/ProductCard';
 import { Loader } from '@/ui/loader/Loader';
+import { AnimatePresence, motion } from 'framer-motion';
 import api from '../../../axiosInstance';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { AnimatePresence, motion } from 'framer-motion';
 import './products.css';
 import './responsive.css';
 

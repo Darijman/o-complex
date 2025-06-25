@@ -42,3 +42,26 @@ main {
     padding: 30px;
   }
 }
+
+/* antd start */
+
+.ant-modal-content {
+  background-color: var(--foreground-color) !important;
+  color: var(--primary-text-color) !important;
+}
+
+.ant-modal-title {
+  background-color: var(--foreground-color) !important;
+  color: var(--primary-text-color) !important;
+}
+
+.ant-modal-close {
+  color: var(--primary-text-color) !important;
+}
+
+.custom_rate .ant-rate-star-zero .ant-rate-star-first,
+.custom_rate .ant-rate-star-zero .ant-rate-star-second {
+  color: var(--secondary-text-color) !important;
+}
+
+/* antd end */

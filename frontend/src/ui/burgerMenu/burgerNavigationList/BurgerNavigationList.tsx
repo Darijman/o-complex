@@ -5,18 +5,18 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import './burgerNavigationList.css';
 
-const navigationList = [
+const navigationList: { id: number; href: string; title: string }[] = [
   { id: 0, href: '/', title: 'Главная' },
   { id: 1, href: '/products', title: 'Продукты' },
 ];
 
 interface Props {
   onClick: () => void;
-  buttonRef: React.RefObject<HTMLButtonElement>;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
 }
 
 export const BurgerNavigationList = ({ onClick, buttonRef }: Props) => {
-  const burgerNavigationListRef = useRef<any | null>(null);
+  const burgerNavigationListRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 

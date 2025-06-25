@@ -1,11 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, Button } from 'antd';
 import { SwitchTheme } from './switchTheme/SwitchTheme';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { useCartStore } from '@/stores/useCartStore/UseCartStore';
 import { BurgerMenu } from '../burgerMenu/BurgerMenu';
+import { CartModal } from '@/components/cartModal/CartModal';
 import './header.css';
 import './responsive.css';
 
@@ -14,6 +16,9 @@ const { Title, Text } = Typography;
 export const Header = () => {
   const router = useRouter();
   const { cartProducts } = useCartStore();
+  const [showCartModal, setShowCartModal] = useState<boolean>(false);
+
+  const totalItems = cartProducts.reduce((sum, product) => sum + product.quantity, 0);
 
   return (
     <header className='header'>
@@ -40,11 +45,16 @@ export const Header = () => {
             Продукты
           </Text>
         </div>
-        <Button icon={<ShoppingCartOutlined style={{ fontSize: '24px' }} />} className='header_shopping_cart_button'>
-          Корзина {cartProducts.length ? `(${cartProducts.length})` : null}
+        <Button
+          icon={<ShoppingCartOutlined style={{ fontSize: '24px' }} />}
+          className='header_shopping_cart_button'
+          onClick={() => setShowCartModal(true)}
+        >
+          Корзина {cartProducts.length ? `(${totalItems})` : null}
         </Button>
         <SwitchTheme />
       </div>
+      <CartModal open={showCartModal} onClose={() => setShowCartModal(false)} />
     </header>
   );
 };

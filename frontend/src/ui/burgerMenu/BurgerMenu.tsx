@@ -10,7 +10,7 @@ import BurgerMenuIcon from '@/assets/svg/burgerMenu-icon.svg';
 
 export const BurgerMenu = () => {
   const [showNavigation, setShowNavigation] = useState<boolean>(false);
-  const buttonRef = useRef<any | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <div className='burger_menu'>

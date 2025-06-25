@@ -1,0 +1,12 @@
+@media screen and (max-width: 470px) {
+  .cart_modal_item {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .cart_modal_item_info {
+    align-items: center;
+  }
+}
